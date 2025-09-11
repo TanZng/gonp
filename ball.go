@@ -10,6 +10,10 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
+const (
+	initialSpeed = 1
+)
+
 type Ball struct {
 	X, Y   float32
 	DirX   float32 // dir horizontal, -1 o 1
@@ -25,7 +29,7 @@ func NewBall(conf *Config) *Ball {
 		Y:      float32(conf.LayoutHeight / 2),
 		DirX:   1, // mueve a la derecha
 		DirY:   1, // mueve hacia abajo
-		Speed:  1,
+		Speed:  initialSpeed,
 		Radius: 4,
 		Paint:  conf.Paint,
 	}
@@ -49,10 +53,11 @@ func (b *Ball) Respawn(x, y float32) {
 	b.X, b.Y = x, y
 	b.DirX = b.DirX * -1
 	b.DirY = randomValue()
+	b.Speed = initialSpeed
 }
 
 func randomValue() float32 {
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	values := []float32{0.0, 1.0, -1.0} // -1.0 has double the chance
+	values := []float32{1.0, -1.0} // -1.0 has double the chance
 	return values[r.Intn(len(values))]
 }

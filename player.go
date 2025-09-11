@@ -12,6 +12,7 @@ type Player struct {
 	Speed         float32
 	Width, Height float32
 	Paint         color.Color
+	Score         float32
 }
 
 func NewPlayer(right bool, conf *Config) *Player {

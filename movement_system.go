@@ -16,19 +16,24 @@ func (m *MovementSystem) Ball(ball *Ball, world *World, players []*Player) {
 	ball.X += ball.DirX * ball.Speed
 	ball.Y += ball.DirY * ball.Speed
 
-	if ball.X < 0 || ball.X > world.Width {
+	if ball.X > world.Width {
 		ball.Respawn(world.Width/2, world.Height/2)
+		players[0].Score += 1
+	}
+
+	if ball.X < 0 {
+		ball.Respawn(world.Width/2, world.Height/2)
+		players[1].Score += 1
 	}
 
 	if ball.Y < 0 || ball.Y > world.Height {
 		ball.DirY = -ball.DirY
-		ball.Update()
 	}
 
 	for _, player := range players {
 		if checkCollision(ball, player) {
 			ball.DirX = -ball.DirX
-			ball.Update()
+			ball.IncreaseSpeed()
 		}
 	}
 }
