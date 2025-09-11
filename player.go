@@ -9,6 +9,7 @@ import (
 
 type Player struct {
 	X, Y          float32
+	Speed         float32
 	Width, Height float32
 	Paint         color.Color
 }
@@ -25,13 +26,14 @@ func NewPlayer(right bool, conf *Config) *Player {
 		Paint:  conf.Paint,
 		Width:  4,
 		Height: heightPaddle,
+		Speed:  5,
 	}
 }
 
-func (b *Player) Update() error {
+func (p *Player) Update() error {
 	return nil
 }
 
-func (b *Player) Draw(screen *ebiten.Image) {
-	vector.DrawFilledRect(screen, b.X, b.Y, b.Width, b.Height, b.Paint, false)
+func (p *Player) Draw(screen *ebiten.Image) {
+	vector.DrawFilledRect(screen, p.X, p.Y, p.Width, p.Height, p.Paint, false)
 }

@@ -14,9 +14,14 @@ type Game struct {
 	enemy  *Player
 
 	world *World
+
+	input *Input
+
+	ms *MovementSystem
 }
 
 func (g *Game) Update() error {
+	g.ms.Update(g.player, g.world, g.input)
 	return nil
 }
 
@@ -41,8 +46,9 @@ func main() {
 	player := NewPlayer(true, conf)
 	enemy := NewPlayer(false, conf)
 	world := NewWorld(conf)
+	input := NewInput()
 
-	if err := ebiten.RunGame(&Game{conf, ball, player, enemy, world}); err != nil {
+	if err := ebiten.RunGame(&Game{conf, ball, player, enemy, world, input, &MovementSystem{}}); err != nil {
 		log.Fatal(err)
 	}
 }
