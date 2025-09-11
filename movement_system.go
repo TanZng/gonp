@@ -4,7 +4,16 @@ type MovementSystem struct {
 }
 
 func (m *MovementSystem) Player(player *Player, world *World, input *Input) {
-	dir := input.Direction()
+	dir := input.Player1()
+	vy := dir * player.Speed
+	nextY := player.Y + vy
+	if nextY >= 0 && nextY <= world.Height-player.Height {
+		player.Y += vy
+	}
+}
+
+func (m *MovementSystem) Enemy(player *Player, world *World, input *Input) {
+	dir := input.Player2()
 	vy := dir * player.Speed
 	nextY := player.Y + vy
 	if nextY >= 0 && nextY <= world.Height-player.Height {

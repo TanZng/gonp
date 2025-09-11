@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"image/color"
 	"math/rand"
 	"time"
@@ -43,7 +42,6 @@ func (b *Ball) Draw(screen *ebiten.Image) {
 }
 
 func (b *Ball) IncreaseSpeed() {
-	fmt.Println(b.Speed)
 	if b.Speed < 8 {
 		b.Speed += 0.5
 	}

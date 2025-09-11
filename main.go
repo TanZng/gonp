@@ -29,6 +29,7 @@ type Game struct {
 
 func (g *Game) Update() error {
 	g.ms.Player(g.players[0], g.world, g.input)
+	g.ms.Enemy(g.players[1], g.world, g.input)
 	g.ms.Ball(g.ball, g.world, g.players)
 	return nil
 }
