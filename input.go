@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
@@ -14,13 +12,11 @@ func NewInput() *Input {
 }
 
 func (g *Input) Direction() float32 {
-	if ebiten.IsKeyPressed(ebiten.KeyW) {
-		fmt.Println("W")
+	if ebiten.IsKeyPressed(ebiten.KeyW) || ebiten.IsKeyPressed(ebiten.KeyArrowUp) {
 		return -1
 	}
 
-	if ebiten.IsKeyPressed(ebiten.KeyS) {
-		fmt.Println("S")
+	if ebiten.IsKeyPressed(ebiten.KeyS) || ebiten.IsKeyPressed(ebiten.KeyArrowDown) {
 		return 1
 	}
 

@@ -9,9 +9,8 @@ import (
 type Game struct {
 	conf *Config
 
-	ball   *Ball
-	player *Player
-	enemy  *Player
+	ball    *Ball
+	players []*Player
 
 	world *World
 
@@ -21,15 +20,16 @@ type Game struct {
 }
 
 func (g *Game) Update() error {
-	g.ms.Update(g.player, g.world, g.input)
+	g.ms.Player(g.players[0], g.world, g.input)
+	g.ms.Ball(g.ball, g.world, g.players)
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	// ebitenutil.DebugPrint(screen, "Hello, World!")
 	g.ball.Draw(screen)
-	g.player.Draw(screen)
-	g.enemy.Draw(screen)
+	g.players[0].Draw(screen)
+	g.players[1].Draw(screen)
 	g.world.Draw(screen)
 }
 
@@ -48,7 +48,7 @@ func main() {
 	world := NewWorld(conf)
 	input := NewInput()
 
-	if err := ebiten.RunGame(&Game{conf, ball, player, enemy, world, input, &MovementSystem{}}); err != nil {
+	if err := ebiten.RunGame(&Game{conf, ball, []*Player{player, enemy}, world, input, &MovementSystem{}}); err != nil {
 		log.Fatal(err)
 	}
 }
