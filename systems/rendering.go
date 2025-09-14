@@ -63,18 +63,20 @@ func (a *renderingSystem) WithWidth(width float32) *renderingSystem {
 }
 
 func (a *renderingSystem) renderEntities(em ecs.EntityManager) {
-	for _, e := range em.FilterByMask(components.MaskPosition | components.MaskSize) {
+	for _, e := range em.FilterByMask(components.MaskPosition | components.MaskSize | components.MaskColor) {
 		position := e.Get(components.MaskPosition).(*components.Position)
 		size := e.Get(components.MaskSize).(*components.Size)
+		c := e.Get(components.MaskColor).(*components.Color)
 		// Draw a bounding box
-		rl.DrawRectangle(int32(position.X), int32(position.Y), int32(size.Width), int32(size.Height), size.Color)
+		rl.DrawRectangle(int32(position.X), int32(position.Y), int32(size.Width), int32(size.Height), c.Value)
 	}
 }
 
 func (a *renderingSystem) renderScore(em ecs.EntityManager) {
-	for _, e := range em.FilterByMask(components.MaskScore) {
+	for _, e := range em.FilterByMask(components.MaskScore | components.MaskColor) {
 		score := e.Get(components.MaskScore).(*components.Score)
+		c := e.Get(components.MaskColor).(*components.Color)
 		val := fmt.Sprintf("%d", score.Value)
-		rl.DrawText(string(val), int32(score.X), int32(score.Y), 100, rl.Green)
+		rl.DrawText(string(val), int32(score.X), int32(score.Y), 100, c.Value)
 	}
 }
