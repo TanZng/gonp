@@ -1,6 +1,11 @@
 package entities
 
-import "github.com/TanZng/gonp/components"
+import (
+	"math/rand"
+	"time"
+
+	"github.com/TanZng/gonp/components"
+)
 
 type Ball struct {
 	*components.Position
@@ -14,6 +19,16 @@ func (b *Ball) IncreaseSpeed() {
 	}
 }
 
-func (b *Ball) ResetSpeed() {
+func (b *Ball) Reset(x, y float32) {
+	b.X = x
+	b.Y = y
 	b.Speed = 0.1
+	b.Dx = -b.Dx
+	b.Dy = randomValue()
+}
+
+func randomValue() float32 {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	values := []float32{1.0, -1.0} // -1.0 has double the chance
+	return values[r.Intn(len(values))]
 }

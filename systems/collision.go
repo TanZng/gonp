@@ -1,9 +1,6 @@
 package systems
 
 import (
-	"math/rand"
-	"time"
-
 	"github.com/TanZng/gonp/components"
 	"github.com/TanZng/gonp/entities"
 	"github.com/andygeiss/ecs"
@@ -21,15 +18,20 @@ func (a *collisionSystem) Process(em ecs.EntityManager) (state int) {
 		Size:     em.Get("ball").Get(components.MaskSize).(*components.Size),
 	}
 
+	player1 := em.Get("player1")
+	player2 := em.Get("player2")
+
 	// Check ball out-of-bounds (left/right edges)
-	if ball.X < 0 || ball.X > float32(a.width) {
-		// Reset ball position, update scores etc.
-		ball.X = float32(a.width) / 2
-		ball.Y = float32(a.height) / 2
-		// You might want to reset velocity here too
-		ball.Dx = -ball.Dx
-		ball.Dy = randomValue()
-		ball.ResetSpeed()
+	if ball.X < 0 {
+		ball.Reset(float32(a.width)/2, float32(a.height)/2)
+		score := player1.Get(components.MaskScore).(*components.Score)
+		score.Increase()
+	}
+
+	if ball.X > float32(a.width) {
+		ball.Reset(float32(a.width)/2, float32(a.height)/2)
+		score := player2.Get(components.MaskScore).(*components.Score)
+		score.Increase()
 	}
 
 	// Bounce off top/bottom walls
@@ -38,8 +40,6 @@ func (a *collisionSystem) Process(em ecs.EntityManager) (state int) {
 	}
 
 	// Check collisions with players
-	player1 := em.Get("player1")
-	player2 := em.Get("player2")
 	playerEntities := []*ecs.Entity{player1, player2}
 	for _, player := range playerEntities {
 		player := entities.Player{
@@ -73,12 +73,6 @@ func (a *collisionSystem) WithWidth(width float32) *collisionSystem {
 
 func NewCollisionSystem() *collisionSystem {
 	return &collisionSystem{}
-}
-
-func randomValue() float32 {
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	values := []float32{1.0, -1.0} // -1.0 has double the chance
-	return values[r.Intn(len(values))]
 }
 
 // checkCollision between ball and paddle, and determine side

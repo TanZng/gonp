@@ -1,6 +1,8 @@
 package systems
 
 import (
+	"fmt"
+
 	"github.com/TanZng/gonp/components"
 	"github.com/andygeiss/ecs"
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -35,6 +37,7 @@ func (a *renderingSystem) Process(em ecs.EntityManager) (state int) {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Black)
 		a.renderEntities(em)
+		a.renderScore(em)
 		rl.EndDrawing()
 	}
 	return ecs.StateEngineContinue
@@ -65,5 +68,13 @@ func (a *renderingSystem) renderEntities(em ecs.EntityManager) {
 		size := e.Get(components.MaskSize).(*components.Size)
 		// Draw a bounding box
 		rl.DrawRectangle(int32(position.X), int32(position.Y), int32(size.Width), int32(size.Height), size.Color)
+	}
+}
+
+func (a *renderingSystem) renderScore(em ecs.EntityManager) {
+	for _, e := range em.FilterByMask(components.MaskScore) {
+		score := e.Get(components.MaskScore).(*components.Score)
+		val := fmt.Sprintf("%d", score.Value)
+		rl.DrawText(string(val), int32(score.X), int32(score.Y), 100, rl.Green)
 	}
 }

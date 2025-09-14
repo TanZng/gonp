@@ -7,4 +7,5 @@ const (
 	MaskState    = uint64(1 << 3)
 	MaskColor    = uint64(1 << 4)
 	MaskType     = uint64(1 << 5)
+	MaskScore    = uint64(1 << 6)
 )
