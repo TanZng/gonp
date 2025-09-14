@@ -3,21 +3,19 @@ package systems
 import (
 	"github.com/TanZng/gonp/components"
 	"github.com/andygeiss/ecs"
-	"github.com/hajimehoshi/ebiten/v2"
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 type inputSystem struct{}
 
 func (a *inputSystem) Process(em ecs.EntityManager) int {
-	player1 := em.Get("player1")
-	player2 := em.Get("player2")
+	player1 := em.Get("player1").Get(components.MaskVelocity).(*components.Velocity)
 
-	if player1 != nil {
-		handleInput(player1, ebiten.KeyW, ebiten.KeyS)
-	}
-	if player2 != nil {
-		handleInput(player2, ebiten.KeyArrowUp, ebiten.KeyArrowDown)
-	}
+	handleInput(player1, rl.KeyW, rl.KeyS)
+
+	player2 := em.Get("player2").Get(components.MaskVelocity).(*components.Velocity)
+
+	handleInput(player2, rl.KeyUp, rl.KeyDown)
 
 	return ecs.StateEngineContinue
 }
@@ -30,15 +28,13 @@ func NewInputSystem() ecs.System {
 	return &inputSystem{}
 }
 
-func handleInput(entity *ecs.Entity, upKey, downKey ebiten.Key) {
-	velocity := entity.Get(components.MaskVelocity).(*components.Velocity)
-
+func handleInput(velocity *components.Velocity, upKey, downKey int32) {
 	// Reset vertical movement each frame
 	velocity.Dy = 0
 
-	if ebiten.IsKeyPressed(upKey) {
+	if rl.IsKeyDown(upKey) {
 		velocity.Dy = -1 // move up
-	} else if ebiten.IsKeyPressed(downKey) {
+	} else if rl.IsKeyDown(downKey) {
 		velocity.Dy = 1 // move down
 	}
 }

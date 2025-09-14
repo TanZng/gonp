@@ -7,11 +7,24 @@ type Velocity struct {
 }
 
 func (a *Velocity) Mask() uint64 {
-	return MaskSize
+	return MaskVelocity
 }
 
-func (a *Velocity) IncreaseSpeed() {
-	if a.Speed < 8 {
-		a.Speed += 0.5
-	}
+func (a *Velocity) WithDx(x float32) *Velocity {
+	a.Dx = x
+	return a
+}
+
+func (a *Velocity) WithDy(y float32) *Velocity {
+	a.Dy = y
+	return a
+}
+
+func (a *Velocity) WithSpeed(speed float32) *Velocity {
+	a.Speed = speed
+	return a
+}
+
+func NewVelocity() *Velocity {
+	return &Velocity{}
 }

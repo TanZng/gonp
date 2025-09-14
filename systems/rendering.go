@@ -33,6 +33,7 @@ func (a *renderingSystem) Process(em ecs.EntityManager) (state int) {
 	// Clear the screen when the window is ready.
 	if rl.IsWindowReady() {
 		rl.BeginDrawing()
+		rl.ClearBackground(rl.Black)
 		a.renderEntities(em)
 		rl.EndDrawing()
 	}
@@ -41,6 +42,21 @@ func (a *renderingSystem) Process(em ecs.EntityManager) (state int) {
 
 func (a *renderingSystem) Teardown() {
 	rl.CloseWindow()
+}
+
+func (a *renderingSystem) WithTitle(title string) *renderingSystem {
+	a.title = title
+	return a
+}
+
+func (a *renderingSystem) WithHeight(height float32) *renderingSystem {
+	a.height = int32(height)
+	return a
+}
+
+func (a *renderingSystem) WithWidth(width float32) *renderingSystem {
+	a.width = int32(width)
+	return a
 }
 
 func (a *renderingSystem) renderEntities(em ecs.EntityManager) {
