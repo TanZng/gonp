@@ -1,10 +1,13 @@
 package entities
 
 import (
-	"math/rand"
-	"time"
-
 	"github.com/TanZng/gonp/components"
+	"github.com/TanZng/gonp/utils"
+)
+
+const (
+	maxSpeed      = 0.3
+	increaseSpeed = 0.01
 )
 
 type Ball struct {
@@ -13,22 +16,18 @@ type Ball struct {
 	*components.Size
 }
 
+// IncreaseSpeed increases the speed up to a defined maximum.
 func (b *Ball) IncreaseSpeed() {
-	if b.Speed < 0.3 {
-		b.Speed += 0.01
+	if b.Speed < maxSpeed {
+		b.Speed += increaseSpeed
 	}
 }
 
+// Reset repositions the ball and sets new direction/speed.
 func (b *Ball) Reset(x, y float32) {
 	b.X = x
 	b.Y = y
 	b.Speed = 0.1
 	b.Dx = -b.Dx
-	b.Dy = randomValue()
-}
-
-func randomValue() float32 {
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	values := []float32{1.0, -1.0} // -1.0 has double the chance
-	return values[r.Intn(len(values))]
+	b.Dy = utils.RandomValueBetween(1.0, -1.0)
 }
