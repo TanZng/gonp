@@ -17,6 +17,10 @@ func (a *inputSystem) Process(em ecs.EntityManager) int {
 
 	handleInput(player2, rl.KeyUp, rl.KeyDown)
 
+	if rl.IsKeyDown(rl.KeyEscape) {
+		return ecs.StateEngineStop
+	}
+
 	return ecs.StateEngineContinue
 }
 

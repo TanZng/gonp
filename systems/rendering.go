@@ -24,25 +24,18 @@ func (a *renderingSystem) Error() error {
 }
 
 func (a *renderingSystem) Setup() {
-	rl.InitWindow(a.width, a.height, a.title)
-	// rl.SetTargetFPS(120)
+
 }
 
 func (a *renderingSystem) Process(em ecs.EntityManager) (state int) {
-	// First check if app should stop.
-	if rl.WindowShouldClose() {
-		return ecs.StateEngineStop
-	}
-	// Clear the screen when the window is ready.
-	if rl.IsWindowReady() {
-		rl.BeginDrawing()
-		rl.ClearBackground(rl.Black)
-		a.renderEntities(em)
-		a.renderScore(em)
+	rl.BeginDrawing()
+	rl.ClearBackground(rl.Black)
+	a.renderEntities(em)
+	a.renderScore(em)
 
-		rl.DrawText(fmt.Sprintln(rl.GetFPS(), "FPS"), a.width-100, a.height-30, 20, rl.Green)
-		rl.EndDrawing()
-	}
+	rl.DrawText(fmt.Sprintln(rl.GetFPS(), "FPS"), a.width-100, a.height-30, 20, rl.Green)
+	rl.EndDrawing()
+
 	return ecs.StateEngineContinue
 }
 
