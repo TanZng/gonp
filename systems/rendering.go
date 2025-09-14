@@ -25,6 +25,7 @@ func (a *renderingSystem) Error() error {
 
 func (a *renderingSystem) Setup() {
 	rl.InitWindow(a.width, a.height, a.title)
+	// rl.SetTargetFPS(120)
 }
 
 func (a *renderingSystem) Process(em ecs.EntityManager) (state int) {
@@ -38,6 +39,8 @@ func (a *renderingSystem) Process(em ecs.EntityManager) (state int) {
 		rl.ClearBackground(rl.Black)
 		a.renderEntities(em)
 		a.renderScore(em)
+
+		rl.DrawText(fmt.Sprintln(rl.GetFPS(), "FPS"), a.width-100, a.height-30, 20, rl.Green)
 		rl.EndDrawing()
 	}
 	return ecs.StateEngineContinue
